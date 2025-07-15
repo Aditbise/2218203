@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios"; 
-
 function App() {
   const [token, setToken] = useState("");
   const handleSubmit = async () => {
@@ -27,28 +26,66 @@ function App() {
   //     alert("Registration failed.");
   //   }
   // };
-    try {
-      const response = await axios.post(
-        "http://20.244.56.144/evaluation-service/auth",
-        {
-          email: "aditbisht24@gmail.com",
-          name: "Aditya Bisht",
-          rollNo: "218203",
-          accessCode: "QAhDUr",
-          clientID:"3fd3cfff-73db-4dbb-8272-11ee42b03a71",
-          clientSecret:"SduyMSAesDUpuPWz",
-        }
-      );
+    // try {
+    //   const response = await axios.post(
+    //     "http://20.244.56.144/evaluation-service/auth",
+    //     {
+    //       email: "aditbisht24@gmail.com",
+    //       name: "Aditya Bisht",
+    //       rollNo: "218203",
+    //       accessCode: "QAhDUr",
+    //       clientID:"3fd3cfff-73db-4dbb-8272-11ee42b03a71",
+    //       clientSecret:"SduyMSAesDUpuPWz",
+    //     }
+    //   );
 
-      setToken(response.data.token);
-      localStorage.setItem("authToken", response.data.access_token);
+    //   setToken(response.data.token);
+    //   localStorage.setItem("authToken", response.data.access_token);
 
-      alert("token saved");
-      console.log("Token:", response.data.access_token);
-    } catch (err) {
-      console.error("Authentication failed:");
-    }
+    //   alert("token saved");
+    //   console.log("Token:", response.data.access_token);
+    // } catch (err) {
+    //   console.error("Authentication failed:");
+    // }
+    Log("frontend", "info", "handler", "Starting authentication request");
+
+  try {
+    const response = await axios.post(
+      "http://20.244.56.144/evaluation-service/auth",
+      {
+        email: "aditbisht24@gmail.com",
+        name: "Aditya Bisht",
+        rollNo: "218203",
+        accessCode: "QAhDUr",
+        clientID:"3fd3cfff-73db-4dbb-8272-11ee42b03a71",
+        clientSecret:"SduyMSAesDUpuPWz",
+      }
+    );
+    Log("frontend", "info", "handler", "Token received successfully");
+
+    setToken(response.data.access_token);
+    localStorage.setItem("authToken", response.data.access_token);
+
+  } catch (err) {
+    Log("frontend", "error", "handler", `Auth failed: ${err.message}`);
+  }
   };
+
+  const Log= async(stack,level,pkg,message)=>{
+    try{
+
+      await axios.post("http://your-test-server.com/logs", {
+        stack,      
+        level,      
+        package: pkg,
+        message,     
+        timestamp: new Date().toISOString()
+      });
+    }catch{
+      console.error("Failed logging");
+    }
+
+  }
 
   return (
     <>
