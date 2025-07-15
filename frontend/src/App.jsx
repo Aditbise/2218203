@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios"; 
+import StatisticsPage from "./StatisticsPage";
 function App() {
   const [token, setToken] = useState("");
+  const [showStats, setShowStats] = useState(false);
   const handleSubmit = async () => {
   //     try {
   //     const response = await axios.post(
@@ -47,7 +49,7 @@ function App() {
     // } catch (err) {
     //   console.error("Authentication failed:");
     // }
-    Log("frontend", "info", "handler", "Starting authentication request");
+    Log("frontend", "info", "api", "Starting authentication request");
 
   try {
     const response = await axios.post(
@@ -61,7 +63,7 @@ function App() {
         clientSecret:"SduyMSAesDUpuPWz",
       }
     );
-    Log("frontend", "info", "handler", "Token received successfully");
+    Log("frontend", "info", "auth", "Token received successfully");
 
     setToken(response.data.access_token);
     localStorage.setItem("authToken", response.data.access_token);
@@ -74,7 +76,7 @@ function App() {
   const Log= async(stack,level,pkg,message)=>{
     try{
 
-      await axios.post("http://your-test-server.com/logs", {
+      await axios.post("http://20.244.56.144/evaluation-service/logs", {
         stack,      
         level,      
         package: pkg,
@@ -96,7 +98,12 @@ function App() {
         {!token ? ( 
           <button onClick={handleSubmit}>Authorize</button>
         ) : (
-          <p>Authorized</p>
+          <div>
+            <p>Authorized</p>
+            <button onClick={() => setShowStats(!showStats)}>
+              {showStats ? "Hide Statistics" : "Show Statistics"}
+            </button>
+          </div>
         )}
       </div>
     </>
