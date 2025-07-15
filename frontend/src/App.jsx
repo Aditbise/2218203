@@ -1,43 +1,65 @@
 import { useState } from "react";
-import axios from "axios"; // ✅ Import axios
+import axios from "axios"; 
 
 function App() {
-  const [registered, setRegistered] = useState(false); // ✅ Boolean instead of string
-
+  const [token, setToken] = useState("");
   const handleSubmit = async () => {
+  //     try {
+  //     const response = await axios.post(
+  //       "http://20.244.56.144/evaluation-service/register",
+  //       {
+  //         email: "aditbisht24@gmail.com",
+  //         name: "Aditya Bisht",
+  //         mobileNo: "9917522589",
+  //         githubUsername: "Aditbise",
+  //         rollNo: "218203",
+  //         accessCode: "QAhDUr"
+  //       }
+  //     );
+
+  //     localStorage.setItem("clientID", response.data.clientID);
+  //     localStorage.setItem("clientSecret", response.data.clientSecret);
+
+  //     alert("Registered successfully. ClientID and Secret saved.");
+  //     setRegistered(true);
+  //   } catch (err) {
+  //     console.error("Registration failed:", err.response?.data || err.message);
+  //     alert("Registration failed.");
+  //   }
+  // };
     try {
       const response = await axios.post(
-        "http://20.244.56.144/evaluation-service/register",
+        "http://20.244.56.144/evaluation-service/auth",
         {
           email: "aditbisht24@gmail.com",
           name: "Aditya Bisht",
-          mobileNo: "9917522589",
-          githubUsername: "Aditbise",
           rollNo: "218203",
-          accessCode: "" 
+          accessCode: "QAhDUr",
+          clientID:"3fd3cfff-73db-4dbb-8272-11ee42b03a71",
+          clientSecret:"SduyMSAesDUpuPWz",
         }
       );
 
-      localStorage.setItem("clientID", response.data.clientID);
-      localStorage.setItem("clientSecret", response.data.clientSecret);
+      setToken(response.data.token);
+      localStorage.setItem("authToken", response.data.access_token);
 
-      alert(" Registered! ClientID & Secret saved.");
-      setRegistered(true);
+      alert("token saved");
+      console.log("Token:", response.data.access_token);
     } catch (err) {
-      console.error("Registration fail");
+      console.error("Authentication failed:");
     }
   };
 
   return (
     <>
       <h1>URL Shortener</h1>
-      <div style={{ padding: "20px" }}>
-        <h1>Candidate Registration</h1>
+      <div>
+        <h1>Candidate Authorization</h1>
 
-        {!registered ? ( 
-          <button onClick={handleSubmit}>Register Now</button>
+        {!token ? ( 
+          <button onClick={handleSubmit}>Authorize</button>
         ) : (
-          <p>Registered</p>
+          <p>Authorized</p>
         )}
       </div>
     </>
