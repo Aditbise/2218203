@@ -14,14 +14,14 @@ function App() {
           mobileNo: "9917522589",
           githubUsername: "Aditbise",
           rollNo: "218203",
-          accessCode: "QAhDUr" 
+          accessCode: "" 
         }
       );
 
       localStorage.setItem("clientID", response.data.clientID);
       localStorage.setItem("clientSecret", response.data.clientSecret);
 
-      alert("✅ Registered! ClientID & Secret saved.");
+      alert(" Registered! ClientID & Secret saved.");
       setRegistered(true);
     } catch (err) {
       console.error("Registration fail");
